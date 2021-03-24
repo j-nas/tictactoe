@@ -1,0 +1,50 @@
+.gameBoard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 300px;
+  height: 300px;
+  grid-template-areas: 
+    "a1 a2 a3"
+    "b1 b2 b3"
+    "c1 c2 c3";
+  font-size: 70px;
+  align-content: center;
+  justify-self: center;
+  margin:auto;
+  margin-top: 100px;
+}
+.square{
+  
+  text-align: center;
+  line-height: 100px;
+  vertical-align: middle;
+  border-style: solid;
+}
+#a1 {
+  grid-area: a1;
+}
+#a2 {
+  grid-area: a2;
+}
+#a3 {
+  grid-area: a3;
+}
+#b1 {
+  grid-area: b1;
+}
+#b2 {
+  grid-area: b2;
+}
+#b3 {
+  grid-area: b3;
+}
+#c1 {
+  grid-area: c1;
+}
+#c2 {
+  grid-area: c2;
+}
+#c3 {
+  grid-area: c3;
+}

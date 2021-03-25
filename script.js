@@ -3,7 +3,7 @@ const createPlayer = (name, marker) => {
 };
 
 const gameBoard = (() => {
-  let turn = 0;
+  let turn = "X";
   let boardO = [];
   let boardX = [];
   const getBoardO = () => boardO;
@@ -16,41 +16,58 @@ const gameBoard = (() => {
   };
   const getTurn = () => turn;
   const nextTurn = () => {
-    if (turn == 0) {
-      turn = 1;
+    if (turn == "X") {
+      turn = "O";
     } else {
-      turn = 0;
+      turn = "X";
     }
   };
-
-  //event listener for squares
-
-  const squares = document.querySelectorAll(".square");
-  console.table(squares);
+  
+  
   const playerPlay = (e) => {
-    if (getTurn() == 0) {
+    if (getTurn() == "X") {
       setBoardX(e);
       drawBoard.updateBoard()
+      gameBoard.checkVictory(getBoardX());
     }
-    if (getTurn() == 1) {
+    if (getTurn() == "O") {
       setBoardO(e);
       drawBoard.updateBoard()
+      gameBoard.checkVictory(getBoardO());
     }
     nextTurn();
   };
-  const checkVictory = () => {
-    if (getBoardO().length > 2 && getBoardO().reduce((a, b) => a + b) == 15) {
-      return alert("PLAYER O WINS");
+  const checkVictory = (player) => {   
+    for (let i = 0; i < winConds().length; i++) {
+      let count = 0
+      for (let j = 0; j < winConds()[i].length; j++) {
+        if (player.includes(winConds()[i][j])) {
+          count += 1
+        }
+        if (count == 3) {
+          drawBoard.lockBoard()
+          return alert("PLAYER " + getTurn() + "WINS!")
+        }
+      }
     }
-    if (getBoardX().length > 2 && getBoardX().reduce((a, b) => a + b) == 15) {
-      return alert("PLAYER X WINS");
-    }
-    if (getBoardX().length + getBoardO().length == 9)
+    if (getBoardX().length + getBoardO().length == 9) {
+      drawBoard.lockBoard()
       return alert("TIE GAME DUDES");
+    }
   };
-
-  const reset = () => {
-    turn = 0;
+  const winConds = () => [
+    [8, 5, 2],
+    [8, 1, 6],
+    [8, 3, 4],
+    [3, 5, 7],
+    [4, 9, 2],
+    [1, 5, 9],
+    [6, 7, 2],
+    [6, 5, 4]
+  ]
+  
+  const reset = () => { 
+    turn = "X";
     boardO = [];
     boardX = [];
     drawBoard.clearBoard()
@@ -65,6 +82,7 @@ const gameBoard = (() => {
     nextTurn,
     playerPlay,
     checkVictory,
+    winConds,
     reset,
   };
 })();
@@ -79,6 +97,12 @@ const drawBoard = (() => {
       div.removeAttribute("style")
     });
   };
+  const lockBoard = () => {
+    squares.forEach((div) => {
+      div.style.pointerEvents = "none"
+
+    })
+  }
   const updateBoard = () => {
     for (let i = 0; i < gameBoard.getBoardO().length; i++) {
       document.querySelector(`[data-sq="${gameBoard.getBoardO()[i]}"]`)
@@ -91,14 +115,13 @@ const drawBoard = (() => {
   };
   squares.forEach((e) => {
     e.addEventListener("click", () => {
-      console.log(e.dataset.sq);
       gameBoard.playerPlay(+e.dataset.sq);
       e.style.pointerEvents = "none";
-      gameBoard.checkVictory();
     });
   });
   return {
     clearBoard,
     updateBoard,
+    lockBoard
   };
 })();

@@ -1,3 +1,8 @@
+h1 {
+  margin: auto;
+}
+
+
 .gameBoard {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -13,38 +18,45 @@
   justify-self: center;
   margin:auto;
   margin-top: 100px;
+  border-style: groove;
+}
+.square:hover{
+  border-width: 10px;
+  background-color: lawngreen;
+  transform:skew(66)
+  
 }
 .square{
   
   text-align: center;
   line-height: 100px;
   vertical-align: middle;
-  border-style: solid;
+  border-style:inset;
 }
-#a1 {
+[data-sq="8"] {
   grid-area: a1;
 }
-#a2 {
+[data-sq="1"] {
   grid-area: a2;
 }
-#a3 {
+[data-sq="6"] {
   grid-area: a3;
 }
-#b1 {
+[data-sq="3"] {
   grid-area: b1;
 }
-#b2 {
+[data-sq="5"] {
   grid-area: b2;
 }
-#b3 {
+[data-sq="7"] {
   grid-area: b3;
 }
-#c1 {
+[data-sq="4"] {
   grid-area: c1;
 }
-#c2 {
+[data-sq="9"] {
   grid-area: c2;
 }
-#c3 {
+[data-sq="2"] {
   grid-area: c3;
 }

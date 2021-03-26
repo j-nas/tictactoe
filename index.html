@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <head>
-  <title>Tic Tac Turd</title>
+  <title>Tic Tac Toe</title>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width" initial-scale="1">
+  <script src="https://kit.fontawesome.com/bcea42c32f.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <h1>TIC TAC TURD</h1>
-  <div class="gameBoard">
-    <div class="square" data-sq="8"></div>
-    <div class="square" data-sq="1"></div>
-    <div class="square" data-sq="6"></div>
-    <div class="square" data-sq="3"></div>
-    <div class="square" data-sq="5"></div>
-    <div class="square" data-sq="7"></div>
-    <div class="square" data-sq="4"></div>
-    <div class="square" data-sq="9"></div>
-    <div class="square" data-sq="2"></div>
+  <div class="main">
+    <div class="title">
+      TIC TAC TOE
+    </div>
+    <div class="messageArea">
+      <div class="messages">Welcome to Tic Tac Toe. Select your avatar,
+        or start playing!</div>
+    </div>
+    <div class="gameBoard">
+      <div class="square" data-sq="8"></div>
+      <div class="square" data-sq="1"></div>
+      <div class="square" data-sq="6"></div>
+      <div class="square" data-sq="3"></div>
+      <div class="square" data-sq="5"></div>
+      <div class="square" data-sq="7"></div>
+      <div class="square" data-sq="4"></div>
+      <div class="square" data-sq="9"></div>
+      <div class="square" data-sq="2"></div>
+    </div>
+    <div class="buttons" id="btnReset" onclick="gameBoard.reset('a')">
+      <button class="btn" id="reset" >
+        
+      </button>
+    </div>
+    <div class="buttons" id="btnChoose" onclick="drawBoard.avatarSel()">
+      <button class="btn" id="choice" >
+        Pick Character
+      </button>
+    </div>
   </div>
-  <button class="btn" id="reset" onclick="gameBoard.reset()">RESET</button>
-  <button class="btn" id="choice" onclick="drawBoard.avatarSel()">Pick Character</button>
   <script src="script.js"></script>
 </body>

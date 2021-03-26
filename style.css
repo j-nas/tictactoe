@@ -1,24 +1,71 @@
-h1 {
-  margin: auto;
+:root {
+  background-color:rgb(173, 247, 187);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
+.main {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 155px 155px;
+  grid-template-rows: 50px 125px 310px 50px;
+  grid-template-areas: 
+    "title title"
+    "message message"
+    "gameboard gameboard"
+    "btnReset btnChoose";
+  margin: 0;
+  justify-self: center;
+  width: fit-content;
+  height: fit-content;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
+.title {
+  grid-area: title;
+  place-self: center;
+  font-size: 30pt;
+  font-family: fantasy;
+}
+.messageArea {
+  display: grid;
+  grid-area: message;
+  /* background-color: seagreen; */
+  padding: 10px;
+}
+.messages {
+  background-color: #4caf50;
+  z-index: 5;
+  padding: 5px;
+  font-family: monospace;
+  font-size: 12pt;
+}
 .gameBoard {
+  grid-area: gameboard;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  width: 300px;
-  height: 300px;
+  width: 309px;
+  height: 309px;
   grid-template-areas: 
     "a1 a2 a3"
     "b1 b2 b3"
     "c1 c2 c3";
-  font-size: 70px;
+  font-size: 65px;
   align-content: center;
   justify-self: center;
+  padding-left: 1px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-right: 1px;
   margin:auto;
-  margin-top: 100px;
-  border-style: groove;
+  /* margin-top: 100px; */
+  border-style: none;
+  gap: 1px;
+  background-color: rgb(4, 39, 0);
 }
 .square:hover{
   border-width: 10px;
@@ -26,12 +73,19 @@ h1 {
   transform:skew(66)
   
 }
+.selected {
+  background-color: lawngreen;
+  z-index: 20;
+}
 .square{
-  
+  background-color: rgb(173, 247, 187);
+  height: 101px;
+  width: 101px;
   text-align: center;
   line-height: 100px;
   vertical-align: middle;
-  border-style:inset;
+  place-self: center;
+  /* border-style:inset; */
 }
 [data-sq="8"] {
   grid-area: a1;
@@ -64,4 +118,66 @@ h1 {
   width: 100px;
   height: 100px;
   z-index: 10;
+}
+.innerSquare:active {
+  animation: wiggle 1s linear 1;
+}
+#btnReset {
+  grid-area: btnReset;
+  place-self: center;
+}
+#btnChoose {
+  grid-area: btnChoose;
+  place-self: center;
+}
+
+#reset {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs,1));
+  width: 30px;
+  height: 30px;
+  border-style: none;
+  border-radius: 50%;
+  
+}
+#reset::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 0;
+  height: 20px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 12px solid;
+  top: 6px;
+  left: 9px;
+  outline: none;
+}
+
+#reset:focus {
+  animation: spin 0.5s linear 1;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg);}
+}
+
+@keyframes wiggle {
+  0% { transform: scale(100%)}
+  100% { transform: scale(120%);}
+}
+
+#choice {
+  border-style: none;
+  padding:0.5rem;
+  border-radius: 15px;
+}
+
+.btn {
+  outline: none;
+  background-color: #4caf50;
+  
 }

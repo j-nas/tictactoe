@@ -1,3 +1,8 @@
+2021-03-26 16:22:01
+/=================/
+Avatar selection fully implemented, UI elements are complete, message area is working.
+AI implementation is next
+
 2021-03-26 01:31:28
 /=================/
 Avatar selection code complete.

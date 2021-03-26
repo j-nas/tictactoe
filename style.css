@@ -60,3 +60,8 @@ h1 {
 [data-sq="2"] {
   grid-area: c3;
 }
+.innerSquare {
+  width: 100px;
+  height: 100px;
+  z-index: 10;
+}

@@ -1,4 +1,5 @@
 const player = (() => {
+  
   function Avatar(emoji, description, datasq) {
     this.emoji = emoji;
     this.description = description;
@@ -20,7 +21,6 @@ const player = (() => {
   };
   const setCurrentAvatar = (dataav) => {
     currentAvatar = getAvatarList().find((obj) => obj.datasq == dataav);
-    
   };
   const getCurrentAvatar = () => {
     return currentAvatar;
@@ -28,6 +28,7 @@ const player = (() => {
   const getOpponentAvatar = () => {
     return fec;
   };
+  
   return {
     getAvatarList,
     setCurrentAvatar,
@@ -40,6 +41,7 @@ const gameBoard = (() => {
   let turn = "X";
   let boardO = [];
   let boardX = [];
+  
   const getBoardO = () => boardO;
   const getBoardX = () => boardX;
   const setBoardO = (e) => {
@@ -60,13 +62,16 @@ const gameBoard = (() => {
   const playerPlay = (e) => {
     if (getTurn() == "X") {
       setBoardX(e);
-      messageArea.playerOturn()
+      messageArea.playerOturn();
       drawBoard.updateBoard();
+      drawBoard.lockBoard()
       gameBoard.checkVictory(getBoardX());
+      
+      
     }
-    if (getTurn() == "O") {
+    if (getTurn() == "O") { 
       setBoardO(e);
-      messageArea.playerXturn()
+      messageArea.playerXturn();
       drawBoard.updateBoard();
       gameBoard.checkVictory(getBoardO());
     }
@@ -81,14 +86,22 @@ const gameBoard = (() => {
         }
         if (count == 3) {
           drawBoard.lockBoard();
-          if(getTurn() == "X") {return messageArea.playerXvictor()}
-          if(getTurn() == "O") {return messageArea.playerOvictor()}
+          if (getTurn() == "X") {
+            return messageArea.playerXvictor(), "X-won";
+          }
+          if (getTurn() == "O") {
+            return messageArea.playerOvictor(), "O-won";
+          }
         }
       }
     }
     if (getBoardX().length + getBoardO().length == 9) {
       drawBoard.lockBoard();
-      return messageArea.tieGame()
+      return messageArea.tieGame(), "tie";
+    }
+    if (getTurn() == "X") {
+    
+      setTimeout(ai.aiTurn, 1000)
     }
   };
   const winConds = () => [
@@ -108,9 +121,8 @@ const gameBoard = (() => {
     boardX = [];
     drawBoard.clearBoard();
     if (b == "a") {
-      messageArea.playerXturn()
+      messageArea.playerXturn();
     }
-
   };
 
   return {
@@ -128,7 +140,6 @@ const gameBoard = (() => {
 })();
 
 const drawBoard = (() => {
-  
   let squares = document.querySelectorAll(".square");
   const clearBoard = () => {
     squares.forEach((e) => {
@@ -141,6 +152,13 @@ const drawBoard = (() => {
       div.style.pointerEvents = "none";
     });
   };
+  const unLockBoard = () => {
+    squares.forEach((div) => {
+      if(div.innerText === "") {
+        div.removeAttribute("style")
+      }
+    })
+  }
   const updateBoard = () => {
     for (let i = 0; i < gameBoard.getBoardO().length; i++) {
       document.querySelector(
@@ -155,12 +173,15 @@ const drawBoard = (() => {
   };
 
   const avatarSel = () => {
-    messageArea.writePlayerSelect()
+    messageArea.writePlayerSelect();
     gameBoard.reset("b");
     for (let i = 0; i < player.getAvatarList().length; i++) {
-      let innerSquare = document.createElement("div"); 
-      innerSquare.setAttribute(`data-av`, `${player.getAvatarList()[i].datasq}`)
-      innerSquare.setAttribute(`onclick`, "event.stopPropagation()")
+      let innerSquare = document.createElement("div");
+      innerSquare.setAttribute(
+        `data-av`,
+        `${player.getAvatarList()[i].datasq}`
+      );
+      innerSquare.setAttribute(`onclick`, "event.stopPropagation()");
       innerSquare.classList.add("innerSquare");
       innerSquare.innerText = `${player.getAvatarList()[i].emoji}`;
       document
@@ -171,7 +192,7 @@ const drawBoard = (() => {
     innerSquare.forEach((e) => {
       e.addEventListener("click", () => {
         player.setCurrentAvatar(+e.dataset.av);
-        messageArea.writeSelection()
+        messageArea.writeSelection();
       });
     });
   };
@@ -180,6 +201,8 @@ const drawBoard = (() => {
     e.addEventListener("click", () => {
       gameBoard.playerPlay(+e.dataset.sq);
       e.style.pointerEvents = "none";
+      
+
     });
   });
   const getSquares = () => {
@@ -191,40 +214,41 @@ const drawBoard = (() => {
     updateBoard,
     lockBoard,
     avatarSel,
+    unLockBoard
   };
 })();
 const messageArea = (() => {
-  const messages = document.querySelector(".messages")
+  const messages = document.querySelector(".messages");
   const writePlayerSelect = () => {
-    messages.innerText = "Choose your fighter:"
-  }
+    messages.innerText = "Choose your fighter:";
+  };
   const writeSelection = () => {
     messages.innerText = `${player.getCurrentAvatar().emoji} 
       ${player.getCurrentAvatar().description}. If you are
-      happy with your selection, press play.`
-  }
+      happy with your selection, press play.`;
+  };
 
   const playerXvictor = () => {
     messages.innerText = `Player ${player.getCurrentAvatar().emoji} wins! Press
-      play to play again.`
-  }
+      play to play again.`;
+  };
 
   const playerOvictor = () => {
     messages.innerText = `Player ${player.getOpponentAvatar().emoji} wins! Press
-      play to play again.`
-  }
+      play to play again.`;
+  };
 
   const tieGame = () => {
-    messages.innerText = `Game is tied. Press play to play again`
-  }
+    messages.innerText = `Game is tied. Press play to play again`;
+  };
 
   const playerXturn = () => {
-    messages.innerText = `${player.getCurrentAvatar().emoji}'s turn.`
-  }
+    messages.innerText = `${player.getCurrentAvatar().emoji}'s turn.`;
+  };
 
   const playerOturn = () => {
-    messages.innerText = `${player.getOpponentAvatar().emoji}'s turn`
-  }
+    messages.innerText = `${player.getOpponentAvatar().emoji}'s turn`;
+  };
 
   return {
     writePlayerSelect,
@@ -234,5 +258,48 @@ const messageArea = (() => {
     tieGame,
     playerXturn,
     playerOturn,
+  };
+})();
+
+const ai = (() =>{
+  let aiStatus = true
+  const getAiStatus = () => {
+    return aiStatus
   }
-})()
+  const toggleAi = () => {
+    if(aiStatus == true) {
+      aiStatus = false
+    }
+    if(aiStatus == false) {
+      aiStatus = true
+    }
+  }
+  
+  const aiTurn = (() => {
+    const allMoves = [8, 1, 6, 3, 5, 7, 4, 9, 2]
+    let boardState = []
+    let legalMoves = []
+    for (let element of gameBoard.getBoardO()){
+      boardState.push(element)
+    }
+    for (let element of gameBoard.getBoardX()){
+      boardState.push(element)
+    } 
+    for (let i = 0; i < allMoves.length; i++) {
+      if (!boardState.includes(allMoves[i])) {
+        legalMoves.push(allMoves[i])
+      }
+    }
+    
+    return gameBoard.playerPlay(legalMoves[Math.floor(Math.random() * Math.floor(legalMoves.length))]), drawBoard.unLockBoard()
+    
+
+  })
+  
+  
+  return {
+    aiTurn,
+    toggleAi,
+    getAiStatus
+  }
+})();
